@@ -1,47 +1,49 @@
 class grid {
     constructor(cs) {
-        let h_divisors = [1]
-        let w_divisors = [1]
+        this.cell_h = cs
+        this.cell_w = cs
         
-        // obtenhos os divisores das dimensões e pego
-        // o primeiro divisor igual ou maior a dimensão exigida
-        // pelo usuário.. ou seja, a dimensão de cada célular
-        // não necessariamente será cs x cs
-        for(var i = 2; i <= Math.sqrt(height); i++) {
-            if(height % i == 0) {
-                h_divisors.push(i)
-                if(i != height/i) {
-                    h_divisors.push(height/i)
-                }
-            }
-        }
-        
-        for(i = 2; i <= Math.sqrt(width); i++) {
-            if(width % i == 0) {
-                w_divisors.push(i)
-                if(i != width/i) {
-                    w_divisors.push(width/i)
-                }
-            }
-        }
-        
-        h_divisors.sort((a, b) => {
-            return a > b ? 1 : a < b ? -1 : 0
-        })
-        
-        w_divisors.sort((a, b) => {
-            return a > b ? 1 : a < b ? -1 : 0
-        })
-        
-        this.cell_h = h_divisors.filter((e) => e >= cs)[0]
-        this.cell_w = w_divisors.filter((e) => e >= cs)[0]
-        
-        this.cells = Array((height/this.cell_h) * (width/this.cell_w)).fill(0)
+        this.cells = Array(Math.floor(height/this.cell_h) * Math.floor(width/this.cell_w)).fill(0)
         console.log(this.cells)
     }
 
+    // constructor(cs) {
+    //     let h_divisors = [1]
+    //     let w_divisors = [1]   
+    //     // obtenhos os divisores das dimensões e pego
+    //     // o primeiro divisor igual ou maior a dimensão exigida
+    //     // pelo usuário.. ou seja, a dimensão de cada célular
+    //     // não necessariamente será cs x cs
+    //     for(var i = 2; i <= Math.sqrt(height); i++) {
+    //         if(height % i == 0) {
+    //             h_divisors.push(i)
+    //             if(i != height/i) {
+    //                 h_divisors.push(height/i)
+    //             }
+    //         }
+    //     }
+    //     for(i = 2; i <= Math.sqrt(width); i++) {
+    //         if(width % i == 0) {
+    //             w_divisors.push(i)
+    //             if(i != width/i) {
+    //                 w_divisors.push(width/i)
+    //             }
+    //         }
+    //     }
+    //     h_divisors.sort((a, b) => {
+    //         return a > b ? 1 : a < b ? -1 : 0
+    //     })
+    //     w_divisors.sort((a, b) => {
+    //         return a > b ? 1 : a < b ? -1 : 0
+    //     })
+    //     this.cell_h = h_divisors.filter((e) => e >= cs)[0]
+    //     this.cell_w = w_divisors.filter((e) => e >= cs)[0]
+    //     this.cells = Array((height/this.cell_h) * (width/this.cell_w)).fill(0)
+    //     console.log(this.cells)
+    // }
     // essa callback function é chamada passando-se o label da célula, as coordenadas necessárias
     // para se desenhar o rect e o tamanho do rect
+    
     draw(color_pixel) {
         // desenha a grade
         for(var i = 0 ; i <= width; i += this.cell_w) {
@@ -77,11 +79,11 @@ class grid {
     }
 
     get w() {
-        return width/this.cell_w;
+        return Math.ceil(width/this.cell_w);
     }
 
     get h() {
-        return height/this.cell_h;
+        return Math.ceil(height/this.cell_h);
     }
 }   
 
@@ -121,13 +123,19 @@ async function dfs(sx, sy, dx, dy) {
 }
 
 function setup() {
-    createCanvas(800, 800);
-    cells   = new grid(20)
+    var xwidth = window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth;
+
+    var xheight = window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
+
+    createCanvas(xwidth, xheight);
+    cells   = new grid(30)
   
-    source  = [Math.floor(random(cells.w)), Math.floor(random(cells.w))]
-    destine = [Math.floor(random(cells.w)), Math.floor(random(cells.w))]
-  
-    console.log(source)
+    source  = [Math.floor(random(cells.w)), Math.floor(random(cells.h))]
+    destine = [Math.floor(random(cells.w)), Math.floor(random(cells.h))]
   
     cells.set_pos(...source, 4);
     cells.set_pos(...destine, 3);
