@@ -121,7 +121,7 @@ async function dfs(sx, sy, dx, dy) {
 }
 
 function setup() {
-    createCanvas(500, 500);
+    createCanvas(800, 800);
     cells   = new grid(20)
   
     source  = [Math.floor(random(cells.w)), Math.floor(random(cells.w))]
